@@ -3,16 +3,16 @@ import cors from "cors";
 import productRoutes from "./routes/productRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 
-
 const app = express();
 
+// 🔥 CORS TEM QUE VIR ANTES DAS ROTAS
 app.use(cors());
+
 app.use(express.json());
 
-// Rota de teste abaixo:
-// app.get("/auth", (req, res) => {
-//   res.send("AUTH OK");
-// });
+app.get("/", (req, res) => {
+  res.send("API Petshop rodando 🚀");
+});
 
 app.use("/products", productRoutes);
 app.use("/auth", authRoutes);
