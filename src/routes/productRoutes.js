@@ -7,6 +7,7 @@ import {
 } from "../controllers/productController.js";
 
 import { authMiddleware } from "../middlewares/authMiddleware.js";
+import { upload } from "../middlewares/upload.js";
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.post("/", authMiddleware(["admin"]), createProduct);
 router.get("/", authMiddleware(), getProducts);
 router.put("/:id", authMiddleware(["admin"]), updateProduct);
 router.delete("/:id", authMiddleware(["admin"]), deleteProduct);
+router.post("/", upload.single("image"), createProduct);
 
 export default router;

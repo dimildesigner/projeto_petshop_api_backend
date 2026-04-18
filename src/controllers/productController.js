@@ -6,16 +6,31 @@ import { getStatusEstoque } from "../services/productService.js";
 // CREATE
 export const createProduct = async (req, res) => {
   try {
-    const produto = await Product.create({
+    const produto = new Product({
       ...req.body,
-      estoque_atual: req.body.estoque_atual || 0
+      image: req.file?.path // 🔥 URL do Cloudinary
     });
 
+    await produto.save();
+
     res.status(201).json(produto);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: "Erro ao criar produto" });
   }
 };
+
+// export const createProduct = async (req, res) => {
+//   try {
+//     const produto = await Product.create({
+//       ...req.body,
+//       estoque_atual: req.body.estoque_atual || 0
+//     });
+
+//     res.status(201).json(produto);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 
 // GET
 export const getProducts = async (req, res) => {
