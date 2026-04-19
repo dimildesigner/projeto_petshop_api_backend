@@ -6,40 +6,31 @@ import { getStatusEstoque } from "../services/productService.js";
 // CREATE
 export const createProduct = async (req, res) => {
   try {
+    console.log("FILE:", req.file); // 🔥 DEBUG
+    console.log("BODY:", req.body);
+
     const produto = new Product({
       ...req.body,
-      image: req.file?.path // 🔥 URL do Cloudinary
+      image: req.file ? req.file.path : null, // 🔥 proteção
     });
 
     await produto.save();
 
     res.status(201).json(produto);
   } catch (err) {
-    res.status(500).json({ error: "Erro ao criar produto" });
+    console.error(err); // 🔥 MUITO IMPORTANTE
+    res.status(500).json({ error: err.message });
   }
 };
-
-// export const createProduct = async (req, res) => {
-//   try {
-//     const produto = await Product.create({
-//       ...req.body,
-//       estoque_atual: req.body.estoque_atual || 0
-//     });
-
-//     res.status(201).json(produto);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
 
 // GET
 export const getProducts = async (req, res) => {
   try {
     const produtos = await Product.find();
 
-    const lista = produtos.map(p => ({
+    const lista = produtos.map((p) => ({
       ...p._doc,
-      status: getStatusEstoque(p)
+      status: getStatusEstoque(p),
     }));
 
     res.json(lista);
@@ -51,11 +42,9 @@ export const getProducts = async (req, res) => {
 // UPDATE
 export const updateProduct = async (req, res) => {
   try {
-    const produto = await Product.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const produto = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
 
     if (!produto) return res.sendStatus(404);
 
@@ -77,8 +66,6 @@ export const deleteProduct = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-
 
 // Array
 
