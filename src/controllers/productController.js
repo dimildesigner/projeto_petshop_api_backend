@@ -6,19 +6,24 @@ import { getStatusEstoque } from "../services/productService.js";
 // CREATE
 export const createProduct = async (req, res) => {
   try {
-    console.log("FILE:", req.file); // 🔥 DEBUG
     console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
+
+    const { nome, preco, estoque_atual, estoque_minimo } = req.body || {}; // 🔥 proteção
 
     const produto = new Product({
-      ...req.body,
-      image: req.file ? req.file.path : null, // 🔥 proteção
+      nome,
+      preco: Number(preco),
+      estoque_atual: Number(estoque_atual),
+      estoque_minimo: Number(estoque_minimo),
+      image: req.file ? req.file.path : null,
     });
 
     await produto.save();
 
     res.status(201).json(produto);
   } catch (err) {
-    console.error(err); // 🔥 MUITO IMPORTANTE
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 };
