@@ -1,7 +1,11 @@
+// ✅ authController.js correto
+import jwt from "jsonwebtoken";
+
+const SECRET = process.env.JWT_SECRET;
+
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body || {};
-    // const { email, password } = req.body;
 
     // 🔥 usuário mock (temporário)
     if (email !== "admin@petshop.com" || password !== "123456") {
