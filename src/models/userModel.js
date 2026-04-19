@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 const senhaHash = bcrypt.hashSync("123456", 10);
 
