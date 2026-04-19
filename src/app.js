@@ -5,9 +5,15 @@ import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 
-app.use(cors({
-  origin: "*"
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://seu-frontend.vercel.app", // adicionar depois do deploy
+    ],
+    credentials: true,
+  }),
+);
 
 app.use(express.json());
 
