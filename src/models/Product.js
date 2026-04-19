@@ -13,6 +13,4 @@ const productSchema = new mongoose.Schema({
   timestamps: true
 });
 
-const [image, setImage] = useState(null);
-
 export const Product = mongoose.model("Product", productSchema);
