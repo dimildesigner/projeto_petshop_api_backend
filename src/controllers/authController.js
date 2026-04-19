@@ -1,29 +1,23 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import { users } from "../models/userModel.js";
-
-const SECRET = "segredo";
-
 export const login = async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body || {};
+    // const { email, password } = req.body;
 
-  const user = users.find(u => u.email === email);
+    // 🔥 usuário mock (temporário)
+    if (email !== "admin@petshop.com" || password !== "123456") {
+      return res.status(401).json({ error: "Credenciais inválidas" });
+    }
 
-  if (!user) {
-    return res.status(404).json({ message: "Usuário não encontrado" });
+    const token = jwt.sign(
+      { id: 1, role: "admin" },
+      SECRET,
+      { expiresIn: "1d" }
+    );
+
+    return res.json({ token });
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Erro no login" });
   }
-
-  const valid = await bcrypt.compare(password, user.password);
-
-  if (!valid) {
-    return res.status(401).json({ message: "Senha inválida" });
-  }
-
-  const token = jwt.sign(
-    { id: user.id, role: user.role },
-    SECRET,
-    { expiresIn: "1d" }
-  );
-
-  res.json({ token });
 };
