@@ -5,8 +5,9 @@ import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 
-// 🔥 CORS TEM QUE VIR ANTES DAS ROTAS
-app.use(cors());
+app.use(cors({
+  origin: "*"
+}));
 
 app.use(express.json());
 
