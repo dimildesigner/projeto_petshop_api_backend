@@ -8,7 +8,8 @@ const productSchema = new mongoose.Schema({
   preco: Number,
   estoque_atual: Number,
   estoque_minimo: Number,
-  imagens: [String]
+  imagens: [String],
+  image: String,
 }, {
   timestamps: true
 });
