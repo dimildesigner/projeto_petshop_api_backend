@@ -3,20 +3,21 @@ import cors from "cors";
 import productRoutes from "./routes/productRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
+import stockRoutes from "./routes/stockRoutes.js";
 
 const app = express();
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://seu-frontend.vercel.app",
-  ],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://seu-frontend.vercel.app"],
+    credentials: true,
+  }),
+);
 
 app.use("/auth", express.json(), authRoutes);
 app.use("/products", productRoutes);
-app.use("/dashboard", dashboardRoutes);
+app.use("/dashboard", express.json(), dashboardRoutes);
+app.use("/stock", stockRoutes);
 
 app.get("/", (req, res) => {
   res.send("API Petshop rodando 🚀");
