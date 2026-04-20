@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import productRoutes from "./routes/productRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 const app = express();
 
@@ -13,9 +14,9 @@ app.use(cors({
   credentials: true,
 }));
 
-// express.json() só em rotas que não fazem upload
 app.use("/auth", express.json(), authRoutes);
-app.use("/products", productRoutes); // ← sem express.json() aqui — o multer cuida do parsing
+app.use("/products", productRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 app.get("/", (req, res) => {
   res.send("API Petshop rodando 🚀");
