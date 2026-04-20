@@ -3,7 +3,7 @@ import {
   createProduct,
   getProducts,
   updateProduct,
-  deleteProduct
+  deleteProduct,
 } from "../controllers/productController.js";
 
 import { authMiddleware } from "../middlewares/authMiddleware.js";
@@ -14,8 +14,18 @@ const router = express.Router();
 router.post(
   "/",
   authMiddleware(["admin"]),
-  upload.single("image"),
-  createProduct
+  (req, res, next) => {
+    upload.single("image")(req, res, (err) => {
+      if (err) {
+        console.error("=== ERRO NO MULTER/CLOUDINARY ===");
+        console.error("Mensagem:", err.message);
+        console.error("Stack:", err.stack);
+        return res.status(500).json({ error: err.message });
+      }
+      next();
+    });
+  },
+  createProduct,
 );
 
 router.get("/", authMiddleware(), getProducts);
