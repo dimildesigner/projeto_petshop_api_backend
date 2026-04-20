@@ -6,10 +6,23 @@ import { getStatusEstoque } from "../services/productService.js";
 // CREATE
 export const createProduct = async (req, res) => {
   try {
+    console.log("=== CREATE PRODUCT ===");
     console.log("BODY:", req.body);
     console.log("FILE:", req.file);
+    console.log(
+      "CLOUDINARY_API_KEY:",
+      process.env.CLOUDINARY_API_KEY ? "OK" : "FALTANDO",
+    );
+    console.log(
+      "CLOUDINARY_CLOUD_NAME:",
+      process.env.CLOUDINARY_CLOUD_NAME ? "OK" : "FALTANDO",
+    );
+    console.log(
+      "CLOUDINARY_API_SECRET:",
+      process.env.CLOUDINARY_API_SECRET ? "OK" : "FALTANDO",
+    );
 
-    const { nome, preco, estoque_atual, estoque_minimo } = req.body || {}; // 🔥 proteção
+    const { nome, preco, estoque_atual, estoque_minimo } = req.body || {};
 
     const produto = new Product({
       nome,
@@ -20,10 +33,11 @@ export const createProduct = async (req, res) => {
     });
 
     await produto.save();
-
     res.status(201).json(produto);
   } catch (err) {
-    console.error(err);
+    console.error("=== ERRO DETALHADO ===");
+    console.error("Mensagem:", err.message);
+    console.error("Stack:", err.stack);
     res.status(500).json({ error: err.message });
   }
 };
