@@ -3,7 +3,10 @@ import { getStatusEstoque } from "../services/productService.js";
 
 export const createProduct = async (req, res) => {
   try {
-    const { nome, categoria, especie, porte, fase, preco, estoque_atual, estoque_minimo } = req.body || {};
+    const {
+      nome, categoria, especie, porte, fase,
+      preco, estoque_atual, estoque_minimo, data_validade
+    } = req.body || {};
 
     const produto = new Product({
       nome,
@@ -15,6 +18,7 @@ export const createProduct = async (req, res) => {
       estoque_atual: Number(estoque_atual),
       estoque_minimo: Number(estoque_minimo),
       image: req.file ? req.file.path : null,
+      data_validade: data_validade ? new Date(data_validade) : null,
     });
 
     await produto.save();
@@ -41,25 +45,38 @@ export const getProducts = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const {
-      nome, categoria, especie, porte, fase,
-      preco, estoque_atual, estoque_minimo
+      nome,
+      categoria,
+      especie,
+      porte,
+      fase,
+      preco,
+      estoque_atual,
+      estoque_minimo,
+      data_validade,
     } = req.body || {};
 
     const updates = {};
-    if (nome)           updates.nome = nome;
-    if (categoria)      updates.categoria = categoria;
-    if (especie)        updates.especie = especie;
-    if (porte)          updates.porte = porte;
-    if (fase)           updates.fase = fase;
-    if (preco)          updates.preco = Number(preco);
-    if (estoque_atual)  updates.estoque_atual = Number(estoque_atual);
+    if (nome) updates.nome = nome;
+    if (categoria) updates.categoria = categoria;
+    if (especie) updates.especie = especie;
+    if (porte) updates.porte = porte;
+    if (fase) updates.fase = fase;
+    if (preco) updates.preco = Number(preco);
+    if (estoque_atual) updates.estoque_atual = Number(estoque_atual);
     if (estoque_minimo) updates.estoque_minimo = Number(estoque_minimo);
-    if (req.file)       updates.image = req.file.path;
+    if (req.file) updates.image = req.file.path;
+
+    // data_validade pode ser string vazia para limpar o campo
+    if (data_validade !== undefined) {
+      updates.data_validade =
+        data_validade === "" ? null : new Date(data_validade);
+    }
 
     const produto = await Product.findByIdAndUpdate(
       req.params.id,
       { $set: updates },
-      { new: true }
+      { new: true },
     );
 
     if (!produto) return res.sendStatus(404);
