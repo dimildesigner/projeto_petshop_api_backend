@@ -22,8 +22,9 @@ const productSchema = new mongoose.Schema({
   estoque_atual: Number,
   estoque_minimo: Number,
   image: String,
+  data_validade: { type: Date, default: null },
 }, {
-  timestamps: true
+  timestamps: true,
 });
 
 export const Product = mongoose.model("Product", productSchema);
