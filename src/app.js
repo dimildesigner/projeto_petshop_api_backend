@@ -11,7 +11,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://seu-frontend.vercel.app",
+    "https://projeto-petshop-api-frontend.vercel.app/",
   ],
   credentials: true,
 }));
