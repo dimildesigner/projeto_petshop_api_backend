@@ -9,10 +9,7 @@ import promotionRoutes from "./routes/promotionRoutes.js";
 const app = express();
 
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://projeto-petshop-api-frontend.vercel.app/",
-  ],
+  origin: true,
   credentials: true,
 }));
 
