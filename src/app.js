@@ -17,12 +17,15 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use("/auth", express.json(), authRoutes);
+// ✅ express.json() global — antes de todas as rotas
+app.use(express.json());
+
+app.use("/auth", authRoutes);
 app.use("/products", productRoutes);
-app.use("/dashboard", express.json(), dashboardRoutes);
+app.use("/dashboard", dashboardRoutes);
 app.use("/stock", stockRoutes);
 app.use("/promotions", promotionRoutes);
-app.use("/users", express.json(), userRoutes);
+app.use("/users", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("API Petshop rodando 🚀");
